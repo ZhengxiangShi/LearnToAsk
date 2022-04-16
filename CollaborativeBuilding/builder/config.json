@@ -1,0 +1,43 @@
+{
+  "seed": 0,
+  "train_config": {
+    "batch_size": 50,
+    "num_epochs": 50,
+    "warm_up_steps": 1,
+    "warm_up_factor": 0.1,
+    "beta1": 0.9,
+    "beta2": 0.99,
+    "decay": true,
+    "decay_thr": 0.1,
+    "decay_factor": 0.5
+  },
+  "encoder_config": {
+    "hidden_size": 300,
+    "num_hidden_layers": 2,
+    "embed_dropout": 0.3,
+    "bidirectional": true,
+    "rnn_dropout": 0.3,
+    "train_embeddings": false,
+    "color_size": 6,
+    "mlp_dropout": 0.3
+  },
+  "decoder_config": {
+    "text_hidden_size": 300,
+    "text_dropout": 0.2,
+    "text_attn_heads": 2,
+    "text_layers": 2,
+
+    "world_size": 1089,
+    "world_hidden_size": 300,
+    "world_dropout": 0.2,
+    "world_attn_heads": 1,
+    "world_layers": 4,
+
+    "cell_state_size": 7,
+    "action_type_size": 3,
+    "num_conv_layers": 3,
+    "world_dim": 8,
+    "kernel_size": 3,
+    "episode_len": 10
+  }
+}
