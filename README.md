@@ -22,7 +22,7 @@ An intelligent agent should not only understand and execute the instructor's req
 Please cite our work if it is helpful.
 ```
 @inproceedings{Shi2022learning,
-title = {Learning to Execute or Ask Clarification Questions},
+title = {Learning to execute or ask clarification questions},
 author = {Shi, Zhengxiang and Feng, Yue and Lipani, Aldo},
 year = {2022},
 address = {Seattle, Washington, USA},
