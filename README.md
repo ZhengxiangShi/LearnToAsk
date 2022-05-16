@@ -1,5 +1,5 @@
-# Learning to Execute or Ask Clarification Questions
-Here are the dataset and codes for the Findings of NAACL paper titled "[**Learning to Execute or Ask Clarification Questions**](https://arxiv.org/abs/2204.08373)". 
+# Learning to Execute Actions or Ask Clarification Questions
+Here are the dataset and codes for the Findings of NAACL paper titled "[**Learning to Execute Actions or Ask Clarification Questions**](https://arxiv.org/abs/2204.08373)". 
 
 ## Introduction
 An intelligent agent should not only understand and execute the instructor's requests but also be able to take initiatives, e.g., asking clarification questions, in case the instructions are ambiguous.
@@ -22,7 +22,7 @@ An intelligent agent should not only understand and execute the instructor's req
 Please cite our work if it is helpful.
 ```
 @inproceedings{Shi2022learning,
-title = {Learning to execute or ask clarification questions},
+title = {Learning to Execute Actions or Ask Clarification Questions},
 author = {Shi, Zhengxiang and Feng, Yue and Lipani, Aldo},
 year = {2022},
 address = {Seattle, Washington, USA},
