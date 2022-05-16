@@ -14,7 +14,7 @@ An intelligent agent should not only understand and execute the instructor's req
 ## Code and Dataset
 - `CollaborativeBuilding`: Codes for collaborative building task;
 - `LearnToAsk`: Codes for learning to ask task and joint learning task;
-- `builder_utterance_labels.json`: Annotations of all builder utterances.
+- `builder_utterance_labels.json`: Annotations of all builder utterances. Please ignore `builder_utterance_labels.txt`, which is our draft version.
 - The raw dataset `Minecraft Dialogue Corpus` is from the [repository](https://github.com/prashant-jayan21/minecraft-bap-models#raw-data).
 
 
