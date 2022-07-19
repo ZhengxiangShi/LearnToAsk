@@ -1,3 +1,4 @@
+from email.policy import default
 import sys, os, nltk, pickle, argparse, gzip, csv, json, torch, numpy as np, torch.nn as nn
 from collections import defaultdict
 
@@ -333,7 +334,6 @@ def main(args):
 	print("Total vocabulary size: %d" %len(vocabulary))
 
 	print("\nSaving git commit hashes ...\n")
-	write_commit_hashes("..", args.vocab_name)
 
 	sys.stdout = sys.__stdout__
 
@@ -341,18 +341,15 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--vocab_name', type=str, nargs='?', default=None,
 		help='directory for saved vocabulary wrapper -- auto-generated from embeddings file name if not provided')
-	parser.add_argument('--base_vocab_dir', type=str, default='../vocabulary/', help='location for all saved vocabulary files')
-	parser.add_argument('--vector_filename', type=str, default=None,
-		help='path for word embeddings file')
-	parser.add_argument('--embed_size', type=int, default=300,
-		help='size of word embeddings')
-	parser.add_argument('--data_path', type=str, default='../data/logs/',
-		help='path for training data files')
+	parser.add_argument('--base_vocab_dir', type=str, default='../../data/vocabulary/', help='location for all saved vocabulary files')
+	parser.add_argument('--vector_filename', type=str, default='../../data/glove.42B.300d.txt')
+	parser.add_argument('--embed_size', type=int, default=300, help='size of word embeddings')
+	parser.add_argument('--data_path', type=str, default='../../data/logs/', help='path for training data files')
 	parser.add_argument('--oov_as_unk', default=False, action='store_true', help='do not add oov words to the vocabulary (instead, treat them as unk tokens)')
 	parser.add_argument('--lower', default=False, action='store_true',  help='lowercase tokens in the dataset')
 	parser.add_argument('--use_speaker_tokens', default=False, action='store_true', help='use speaker tokens <Architect> </Architect> and <Builder> </Builder> instead of sentence tokens <s> and </s>')
 	parser.add_argument('--use_builder_action_tokens', default=False, action='store_true', help='use builder action tokens for pickup/putdown actions, e.g. <builder_pickup_red> and <builder_putdown_red>')
-	parser.add_argument('--threshold', type=int, default=0, help='rare word threshold for oov words in the train set')
+	parser.add_argument('--threshold', type=int, default=1, help='rare word threshold for oov words in the train set')
 	parser.add_argument('--all_splits', default=False, action='store_true',  help='whether or not to use val and test data as well')
 	parser.add_argument('--add_builder_utterances', default=False, action='store_true',  help='whether or not to include builder utterances')
 	parser.add_argument('--builder_utterances_only', default=False, action='store_true',  help='whether or not to store only builder utterances')
@@ -361,4 +358,5 @@ if __name__ == '__main__':
 
 	args = parser.parse_args()
 	initialize_rngs(args.seed, torch.cuda.is_available())
+	print('args.vector_filename', args.vector_filename)
 	main(args)

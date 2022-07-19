@@ -396,7 +396,7 @@ def split_orig_sample(action):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--json_data_dir', type=str, default="../builder_data/data_maxlength100") 
+    parser.add_argument('--json_data_dir', type=str, default="../builder_data_with_glove") 
     parser.add_argument('--split', default='train', help='dataset split')
     parser.add_argument('--load_items', default=False, help='load items/item batches')
     parser.add_argument('--max_length', type=int, default=100, help='max_length to be padded')
@@ -407,7 +407,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_prev_utterances', type=int, default=6, help='number of previous utterances to use as input')
     parser.add_argument('--use_builder_actions', default=False, help='include builder action tokens in the dialogue history')
     parser.add_argument('--add_perspective_coords', default=False, action='store_true', help='whether or not to include perspective coords in world state repr')
-    parser.add_argument('--encoder_vocab_path', type=str, default='../builder_data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl', help='path for encoder vocabulary wrapper')
+    parser.add_argument('--encoder_vocab_path', type=str, default='../../data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl', help='path for encoder vocabulary wrapper')
 
     args = parser.parse_args()
 

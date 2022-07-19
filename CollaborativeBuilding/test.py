@@ -12,6 +12,7 @@ from builder.dataloader_with_glove import BuilderDataset, RawInputs
 from builder.utils_builder import evaluate_metrics
 from utils import *
 
+
 def main(args, config):
     testdataset = BuilderDataset(args, split='test', encoder_vocab=None)
     test_items = testdataset.items
@@ -61,12 +62,13 @@ def main(args, config):
     print('Test | Recall: {}, Precision: {}, F1: {}, Loss: {}'.format(test_action_recall, test_action_precision, test_action_f1, test_loss))
     print('Test | Location Acc: {}, Action Type Acc: {}, Color Acc: {}\n\n\n'.format(test_total_location_correct/test_total_location, test_total_action_type_correct/test_total_actions, test_total_color_correct/test_total_color))
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--saved_models_path', type=str, default='./default_path', help='path for saving trained models')
-    parser.add_argument('--encoder_vocab_path', type=str, default='./builder_data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl')
+    parser.add_argument('--encoder_vocab_path', type=str, default='../data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl')
     # Args for dataset
-    parser.add_argument('--json_data_dir', type=str, default="./builder_data/data_maxlength100") 
+    parser.add_argument('--json_data_dir', type=str, default="./builder_data_with_glove") 
     parser.add_argument('--load_items', default=True)
 
     args = parser.parse_args()

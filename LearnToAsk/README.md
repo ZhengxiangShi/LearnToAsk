@@ -3,9 +3,12 @@
 ## 1. Preprocess
 ```
 cd builder
-python dataloader.py --split train --json_data_dir data_path
-python dataloader.py --split val --json_data_dir data_path
-python dataloader.py --split test --json_data_dir data_path
+python data_loader.py --split train
+python data_loader.py --split val
+python data_loader.py --split test
+python dataloader.py --split train --json_data_dir ../builder_with_questions_data
+python dataloader.py --split val --json_data_dir ../builder_with_questions_data
+python dataloader.py --split test --json_data_dir ../builder_with_questions_data
 cd ..
 ```
 

@@ -333,7 +333,6 @@ def main(args):
 	print("Total vocabulary size: %d" %len(vocabulary))
 
 	print("\nSaving git commit hashes ...\n")
-	write_commit_hashes("..", args.vocab_name)
 
 	sys.stdout = sys.__stdout__
 
@@ -341,12 +340,12 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--vocab_name', type=str, nargs='?', default=None,
 		help='directory for saved vocabulary wrapper -- auto-generated from embeddings file name if not provided')
-	parser.add_argument('--base_vocab_dir', type=str, default='../vocabulary/', help='location for all saved vocabulary files')
+	parser.add_argument('--base_vocab_dir', type=str, default='../../data/vocabulary/', help='location for all saved vocabulary files')
 	parser.add_argument('--vector_filename', type=str, default=None,
 		help='path for word embeddings file')
 	parser.add_argument('--embed_size', type=int, default=300,
 		help='size of word embeddings')
-	parser.add_argument('--data_path', type=str, default='../data/logs/',
+	parser.add_argument('--data_path', type=str, default='../../data/logs/',
 		help='path for training data files')
 	parser.add_argument('--oov_as_unk', default=False, action='store_true', help='do not add oov words to the vocabulary (instead, treat them as unk tokens)')
 	parser.add_argument('--lower', default=False, action='store_true',  help='lowercase tokens in the dataset')

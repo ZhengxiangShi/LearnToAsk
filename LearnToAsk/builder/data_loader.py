@@ -17,9 +17,9 @@ class CwCDataset(Dataset):
 
 	def __init__(
 		self, split, compute_perspective=True,
-		data_dir="../builder_data/data/logs/", gold_configs_dir="../builder_data/data/gold-configurations/", save_dest_dir="../data/builder_with_questions_data", saved_dataset_dir="../data/saved_cwc_datasets/lower-no_diff/",
+		data_dir="../../data/logs/", gold_configs_dir="../../data/gold-configurations/", save_dest_dir="../builder_with_questions_data", saved_dataset_dir="../builder_with_questions_data",
 		dump_dataset=False, load_dataset=False,
-		add_augmented_data=False, aug_data_dir="../data/augmented/logs/", aug_gold_configs_dir="../data/augmented/gold-configurations/",
+		add_augmented_data=False, aug_data_dir="../../data/augmented/logs/", aug_gold_configs_dir="../../data/augmented/gold-configurations/",
         aug_sampling_strict=False, lower=False
 	):
 		"""
@@ -157,9 +157,6 @@ class CwCDataset(Dataset):
 						print("Saving self.samples ...")
 						save_pkl_data(dataset_dir + "/"+ self.split + "-samples.pkl", data)
 
-						print("\nSaving git commit hashes ...\n")
-						write_commit_hashes("..", dataset_dir, filepath_modifier="_" + self.split)
-
 						# write which aug dir used
 						with open(os.path.join(dataset_dir, "aug_data_dir.txt"), 'w') as f:
 							f.write(os.path.abspath(aug_data_dir))
@@ -170,6 +167,8 @@ class CwCDataset(Dataset):
 					print("Saving dataset ...\n")
 
 					print("Saving self.jsons ...")
+					if not os.path.exists(save_dest_dir):
+						os.makedirs(save_dest_dir)
 					save_pkl_data(save_dest_dir + "/"+ self.split + "-jsons.pkl", self.jsons)
 
 					print("Saving self.samples ...")
@@ -272,7 +271,7 @@ class CwCDataset(Dataset):
 					for i in range(len(chat_with_actions_history)):
 						elem = chat_with_actions_history[i]
 						weight = None
-						if elem['action'] == 'chat': ## 为什么chat就直接continue
+						if elem['action'] == 'chat':
 							
 							utterance = elem["utterance"]
 							idx = elem['idx']
@@ -362,7 +361,6 @@ class CwCDataset(Dataset):
 								return all_next_actions
 
 							if i > 0:
-								## 如果action之前的不是说话，就不处理了,因为之前肯定处理过了，i==0的时候之前肯定没处理过
 								prev_elem = chat_with_actions_history[i-1]
 								if not prev_elem['action'] == 'chat':
 									continue
@@ -575,17 +573,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--split', default='train', help='dataset split')
     
-    parser.add_argument('--builder_utterance_labels', default='/home/zshi/Desktop/github/Builder/bert_builder_questions/builder_data/builder_utterance_labels.txt')
-    parser.add_argument('--save_dest_dir', default='../builder_data/builder_with_questions_data', help='where to write samples')
+    parser.add_argument('--builder_utterance_labels', default='../../builder_utterance_labels.txt')
+    parser.add_argument('--save_dest_dir', default='../builder_with_questions_data', help='where to write samples') 
     parser.add_argument('--aug_data_dir', default='', help='where to load augmented data from')
     parser.add_argument('--aug_gold_configs_dir', default='', help='where to load augmented gold configs from')
 
-    parser.add_argument('--dump_dataset', default=False, help='build the dataset')
+    parser.add_argument('--dump_dataset', default=True, help='build the dataset')
     parser.add_argument('--add_augmented_data', default=False, action='store_true', help='add dialog-level augmented dataset')
     parser.add_argument('--ignore_perspective', default=False, action='store_true', help='skip computing perspective coordinates')
 
     parser.add_argument('--load_dataset', default=False, action='store_true', help='load a dataset')
-    parser.add_argument('--saved_dataset_dir', default="../data/saved_cwc_datasets/lower-no_perspective_coords/", help='location of saved dataset')
+    parser.add_argument('--saved_dataset_dir', default="../builder_with_questions_data", help='location of saved dataset')
 
     parser.add_argument('--aug_sampling_strict', default=False, action='store_true', help='whether or not to sample strictly, i.e., from every aug group -- we recommend sticking to the default')
 

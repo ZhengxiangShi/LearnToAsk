@@ -19,32 +19,36 @@ from builder.dataloader_with_glove import BuilderDataset, RawInputs
 from builder.utils_builder import evaluate_metrics
 from utils import *
 
+
 def seed_torch(seed):
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+    torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
     torch.backends.cudnn.deterministic = True
+
 
 def count_parameters(model):
     table = PrettyTable(["Modules", "Parameters"])
     total_params = 0
     for name, parameter in model.named_parameters():
-        if not parameter.requires_grad: continue
+        if not parameter.requires_grad: 
+            continue
         param = parameter.numel()
         table.add_row([name, param])
-        total_params+=param
+        total_params += param
     print(table)
     print(f"Total Trainable Params: {total_params}")
     return total_params
+
 
 class MineCraft(Dataset):
     def __init__(self, data_items):
         self.inputs = []
         for i, data in enumerate(tqdm(data_items)):
-            encoder_inputs, grid_repr_inputs, action_repr_inputs, labels, location_mask, raw_input = data 
+            encoder_inputs, grid_repr_inputs, action_repr_inputs, labels, location_mask, raw_input = data
             """
             encoder_inputs: [max_length]
             grid_repr_inputs: [act_len, 8, 11, 9, 11]
@@ -60,13 +64,14 @@ class MineCraft(Dataset):
                     labels[action_j],
                     location_mask[action_j]
                 ))
-                        
+
     def __len__(self):
         return len(self.inputs)
-    
+
     def __getitem__(self, idx):
         return self.inputs[idx]
-        
+
+
 def main(args, config):
     saved_model = args.saved_models_path
     if not os.path.exists(saved_model):
@@ -80,7 +85,7 @@ def main(args, config):
 
     with open(args.encoder_vocab_path, 'rb') as f:
         encoder_vocab = pickle.load(f)
-    
+
     traindataset = BuilderDataset(args, split='train', encoder_vocab=None)
     train_items = traindataset.items
     train_dataset = MineCraft(train_items)
@@ -97,12 +102,12 @@ def main(args, config):
 
     if args.from_trained:
         model.load_state_dict(torch.load(os.path.join(saved_model, "model.pt")))
-    
+
     print('\n\n')
     total_params_encoder = count_parameters(model.encoder)
     total_params_decoder = count_parameters(model.decoder)
     print('\n\n')
-    
+
     config['total_params_encoder'] = total_params_encoder
     config['total_params_decoder'] = total_params_decoder
     with open(os.path.join(saved_model, 'config.json'), 'w') as f:
@@ -121,7 +126,7 @@ def main(args, config):
         total_action_type_correct = 0
         total_actions = 0
         for i, data in enumerate(tqdm(traindataloader)): 
-            encoder_inputs, grid_repr_inputs, action_repr_inputs, labels, location_mask = data 
+            encoder_inputs, grid_repr_inputs, action_repr_inputs, labels, location_mask = data
             """
             encoder_inputs: [batch_size, max_length]
             grid_repr_inputs: [batch_size, 8, 11, 9, 11]
@@ -176,7 +181,7 @@ def main(args, config):
                 labels: [batch_size=1, act_len, 7]
                 """
                 loss, valid_acc, valid_predicted_seq = model(encoder_inputs.long().to(device), grid_repr_inputs.to(device), action_repr_inputs.to(device), labels.long().to(device), location_mask.to(device))
-                
+
                 valid_loss += sum(loss)
                 valid_total_action_type_correct += valid_acc[0]
                 valid_total_location += valid_acc[1]
@@ -195,19 +200,20 @@ def main(args, config):
                 print("Saving model at {}".format(os.path.join(saved_model, "model.pt")))
                 torch.save(model.state_dict(), os.path.join(saved_model, "model.pt"))
                 max_f1 = val_action_f1
-        
+
         writer.add_scalars("Recall", { "validation": val_action_recall}, epoch)
         writer.add_scalars("Precision", {"validation": val_action_precision}, epoch)
         writer.add_scalars("F1", {"validation": val_action_f1}, epoch)
         writer.add_scalars("Loss", {"train": train_loss, "validation": valid_loss}, epoch)
-        
+
         print('Valid | Recall: {}, Precision: {}, F1: {}, Loss: {}'.format(val_action_recall, val_action_precision, val_action_f1, valid_loss))
         print('Valid | Location Acc: {}, Action Type Acc: {}, Color Acc: {}\n\n\n'.format(valid_total_location_correct/valid_total_location, valid_total_action_type_correct/valid_total_actions, valid_total_color_correct/valid_total_color))
         f_output.write('Valid | Recall: {}, Precision: {}, F1: {}, Loss: {}\n'.format(val_action_recall, val_action_precision, val_action_f1, valid_loss))
         f_output.write('Valid | Location Acc: {}, Action Type Acc: {}, Color Acc: {}\n\n\n'.format(valid_total_location_correct/valid_total_actions, valid_total_action_type_correct/valid_total_actions, valid_total_color_correct/valid_total_color))
-        
+
     writer.close()
     f_output.close()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -215,9 +221,9 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=1e-6)
     parser.add_argument('--config_path', type=str, default='./builder/config.json')
     parser.add_argument('--saved_models_path', type=str, default='./default_path', help='path for saving trained models')
-    parser.add_argument('--encoder_vocab_path', type=str, default='./builder_data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl')
+    parser.add_argument('--encoder_vocab_path', type=str, default='../data/vocabulary/glove.42B.300d-lower-1r-speaker-oov_as_unk-all_splits/vocab.pkl')
     # Args for dataset
-    parser.add_argument('--json_data_dir', type=str, default="./builder_data/data_maxlength100") 
+    parser.add_argument('--json_data_dir', type=str, default="builder_data_with_glove") 
     parser.add_argument('--load_items', default=True, action='store_false')
     parser.add_argument('--from_trained', default='')
 
@@ -229,4 +235,3 @@ if __name__ == '__main__':
     config['seed'] = args.seed
     seed_torch(args.seed)
     main(args, config)
-

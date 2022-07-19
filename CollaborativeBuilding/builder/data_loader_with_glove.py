@@ -15,9 +15,9 @@ class CwCDataset(Dataset):
 
 	def __init__(
 		self, split, lower=False, compute_perspective=True,
-		data_dir="../builder_data_with_glove/data/logs/", gold_configs_dir="../builder_data_with_glove/data/gold-configurations/", save_dest_dir="../builder_data_with_glove/", saved_dataset_dir="../builder_data_with_glove/", vocab_dir="../builder_data_with_glove/vocabulary/",
+		data_dir="../../data/logs/", gold_configs_dir="../../data/gold-configurations/", save_dest_dir="../builder_data_with_glove/", saved_dataset_dir="../builder_data_with_glove/", vocab_dir="../../data/vocabulary/",
 		encoder_vocab=None, dump_dataset=False, load_dataset=False,
-		add_augmented_data=False, aug_data_dir="../builder_data_with_glove/data/augmented/logs/", aug_gold_configs_dir="../builder_data_with_glove/data/augmented/gold-configurations/",
+		add_augmented_data=False, aug_data_dir="../../data/augmented/logs/", aug_gold_configs_dir="../../data/augmented/gold-configurations/",
         aug_sampling_strict=False
 	):
 		"""
@@ -179,9 +179,6 @@ class CwCDataset(Dataset):
 
 					print("Saving self.samples ...")
 					save_pkl_data(dataset_dir + "/"+ self.split + "-samples.pkl", self.samples)
-
-					print("\nSaving git commit hashes ...\n")
-					write_commit_hashes("..", dataset_dir, filepath_modifier="_" + self.split)
 
 		self.augmentation_factor = 0
 
