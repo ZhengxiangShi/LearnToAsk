@@ -35,7 +35,7 @@ wget https://nlp.stanford.edu/data/glove.42B.300d.zip
 unzip glove.42B.300d.zip
 cd ../CollaborativeBuilding/builder
 python vocab.py --lower --use_speaker_tokens --oov_as_unk --all_splits --add_builder_utterances
-cd ..
+cd ../..
 ```
 
 ### 2. Code
