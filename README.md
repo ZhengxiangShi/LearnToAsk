@@ -1,5 +1,5 @@
 # Learning to Execute Actions or Ask Clarification Questions
-Here are the dataset and codes for the Findings of NAACL paper titled "[**Learning to Execute Actions or Ask Clarification Questions**](https://arxiv.org/abs/2204.08373)". 
+Here are the dataset and codes for the Findings of NAACL paper titled "[**Learning to Execute Actions or Ask Clarification Questions**](https://aclanthology.org/2022.findings-naacl.158/)". 
 
 ## Dependencies
 
